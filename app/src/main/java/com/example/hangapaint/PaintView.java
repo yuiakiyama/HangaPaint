@@ -48,33 +48,23 @@ public class PaintView extends View {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                touchDown(x, y);
+                stack.clear();
+                path.reset();
+                path.moveTo(x, y);
+
                 break;
             case MotionEvent.ACTION_MOVE:
-                touchMove(x, y);
+                path.lineTo(x, y);
+
                 break;
             case MotionEvent.ACTION_UP:
-                touchUp(x, y);
+                path.lineTo(x, y);
+                canvas.drawPath(path, paint);
+                paths.add(path);
+                path = new Path();
+
                 break;
         }
-
         return true;
-    }
-
-    private void touchDown(float x, float y) {
-        stack.clear();
-        path.reset();
-        path.moveTo(x, y);
-    }
-
-    private void touchMove(float x, float y) {
-        path.lineTo(x, y);
-    }
-
-    private void touchUp(float x, float y) {
-        path.lineTo(x, y);
-        canvas.drawPath(path, paint);
-        paths.add(path);
-        path = new Path();
     }
 }
